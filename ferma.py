@@ -1,15 +1,9 @@
-from abc import ABC, abstractmethod
 
+string = int(input('Введите число: '))
 
-class Farm(ABC):
-    @abstractmethod
-    def __init__(self, name_crow, name_chicken):
-        self.name_crow = name_crow
-        self.number_chicken = name_chicken
+moloko = 0
 
-class Crow(Farm):
-    def name(self):
-        return self.name_crow
-    
-crows = Crow('Коровы')
-print(crows.name())
+for string in range(2):
+    moloko = moloko + string
+
+print(moloko)
