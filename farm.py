@@ -47,6 +47,15 @@ class Chickens(Farm):
 
     def product(self):
         return self.product_chicken
+    
+    def milk():
+        string = int(input('Введите число: '))
+        moloko = 0
+        for string in range(2):
+            moloko = moloko + string
+    print(milk())
+
+        #print(moloko)
     """def product(self):
         return super().product()"""
 
