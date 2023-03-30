@@ -1,11 +1,10 @@
 import uuid
-import random
 
 
 class Animals():
     def type_animal():
         dict_animals = {'корова': [], 'курица': []}
-        
+
         dict_animals['корова'].extend(range(1, 11))
         dict_animals['курица'].extend(range(1, 21))
 
@@ -33,13 +32,11 @@ class Animals():
         lst = [product for product in list_product]
         print(lst[0] + '\n' + lst[1])
     """ dict_product = {'коровы': 'молоко', 'куры': 'яйца'}
-        for key, value in dict_product.items():
-            print(key, 'дают', value)"""
-    type_product()
+                for key, value in dict_product.items():
+                    print(key, 'дают', value)"""
+    #type_product()
 
     #def product():
-        #return random.randint(8, 12)
-
 
 class Farm(Animals):
     """def info_animals():
