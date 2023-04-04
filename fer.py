@@ -1,59 +1,80 @@
+from abc import ABC, abstractmethod
 import uuid
+import random
 
 
-class Animals():
-    def type_animal():
-        dict_animals = {'корова': [], 'курица': []}
+class Animals(ABC):
+    @abstractmethod
+    def type_(self):
+        pass
 
-        dict_animals['корова'].extend(range(1, 11))
-        dict_animals['курица'].extend(range(1, 21))
+    @abstractmethod
+    def product_type(self):
+        pass
 
-        for value in dict_animals['корова']:
-            print(value, list(dict_animals.keys())[0], uuid.uuid4())
-
-        nums_cow = []
-        for i in list(dict_animals.items())[0][1]:
-            i = i
-            nums_cow.append(i)
-        print('всего коров добавлено в хлев:', len(nums_cow), 'штук', '\n')
-
-        for value in dict_animals['курица']:
-            print(value, list(dict_animals.keys())[1], uuid.uuid4())
-
-        nums_chicken = []
-        for i in list(dict_animals.items())[1][1]:
-            i = i
-            nums_chicken.append(i)
-        print('всего кур добавлено в хлев:', len(nums_chicken), 'штук', '\n')
-    type_animal()
-
-    def type_product():
-        list_product = ['молоко', 'яйца']
-        lst = [product for product in list_product]
-        print(lst[0] + '\n' + lst[1])
-    """ dict_product = {'коровы': 'молоко', 'куры': 'яйца'}
-                for key, value in dict_product.items():
-                    print(key, 'дают', value)"""
-    #type_product()
-
-    #def product():
-
-class Farm(Animals):
-    """def info_animals():
-        super().type_animal()
-    info_animals()"""
-
-    """def collecting_animals():
-        print(Animals().type_animal())
-    collecting_animals()"""
+    @abstractmethod
+    def product(self):
+        pass
 
 
+class Cow(Animals):
+    def type_(self):
+        return 'cow'
+
+    def product_type(self):
+        return 'milk'
+
+    def product(self):
+        return random.randint(8, 12)
+
+cow = Cow()
 
 
+class Chicken(Animals):
+    def type_(self):
+        return 'chicken'
+
+    def product_type(self):
+        return 'egg'
+
+    def product(self):
+        return random.randint(0, 1)
+
+chicken = Chicken()
 
 
-    """def collecting_farm():
+class Farm():
+    def __init__(self):
+        self.animals = []
+        self.products = {}
+        self.animals_info = {}
+        self.animals_registrations = {}
 
-    def addendumanimal():
+    def add_animal(self, animal):
+        self.animals.append(animal)
+        self.animals_info[animal.type_()] = self.animals_info.get(animal.type_(), 1) + 1
 
-    def expansion():"""
+    def collect_product_from_animals(self, product):
+        self.products[product.product_type()] = self.products.get(product.product_type(), [product.product()]) + [product.product()]
+        
+if __name__ == "__main__":
+
+    farm = Farm()
+
+    cows = [Cow() for _ in range(1, 10)]
+    for cow in cows:
+        farm.add_animal(cow)
+
+    chickens = [Chicken() for _ in range(1, 20)]
+    for chicken in chickens:
+        farm.add_animal(chicken)
+
+    for animal_cow in cows:
+        farm.collect_product_from_animals(animal_cow)
+
+    for animal_chiken in chickens:
+        farm.collect_product_from_animals(animal_chiken)
+
+    print(farm.animals_info)
+    #print(farm.animals_registrations)
+    print(farm.products)
