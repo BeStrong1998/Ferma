@@ -76,5 +76,4 @@ if __name__ == "__main__":
         farm.collect_product_from_animals(animal_chiken)
 
     print(farm.animals_info)
-    #print(farm.animals_registrations)
     print(farm.products)
