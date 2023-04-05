@@ -53,10 +53,12 @@ class Farm():
     def add_animal(self, animal):
         self.animals.append(animal)
         self.animals_info[animal.type_()] = self.animals_info.get(animal.type_(), 1) + 1
+        #self.products[animal.product_type()] = self.products.get(animal.product_type(), [animal.product()]) + [animal.product()]
 
-    def collect_product_from_animals(self, product):
-        self.products[product.product_type()] = self.products.get(product.product_type(), [product.product()]) + [product.product()]
-        
+    def collect_product_from_animals(self):
+        for animal in self.animals:
+            self.products[animal.product_type()] = self.products.get(animal.product_type(), [animal.product()]) + [animal.product()]
+
 if __name__ == "__main__":
 
     farm = Farm()
@@ -64,16 +66,14 @@ if __name__ == "__main__":
     cows = [Cow() for _ in range(1, 10)]
     for cow in cows:
         farm.add_animal(cow)
+        farm.collect_product_from_animals()
 
     chickens = [Chicken() for _ in range(1, 20)]
     for chicken in chickens:
         farm.add_animal(chicken)
+        farm.collect_product_from_animals()
 
-    for animal_cow in cows:
-        farm.collect_product_from_animals(animal_cow)
-
-    for animal_chiken in chickens:
-        farm.collect_product_from_animals(animal_chiken)
 
     print(farm.animals_info)
     print(farm.products)
+    #print(farm.animals)
