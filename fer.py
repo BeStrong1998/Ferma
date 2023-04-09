@@ -16,7 +16,6 @@ class Animals(ABC):
     def product(self):
         pass
 
-
 class Cow(Animals):
     def type_(self):
         return 'cow'
@@ -28,7 +27,6 @@ class Cow(Animals):
         return random.randint(8, 12)
 
 cow = Cow()
-
 
 class Chicken(Animals):
     def type_(self):
@@ -42,7 +40,6 @@ class Chicken(Animals):
 
 chicken = Chicken()
 
-
 class Farm():
     def __init__(self):
         self.animals = []
@@ -52,29 +49,37 @@ class Farm():
 
     def add_animal(self, animal):
         self.animals.append(animal)
-        self.animals_info[animal.type_()] = self.animals_info.get(animal.type_(), 1) + 1
+        self.animals_info[animal.type_()] = self.animals_info.get(animal.type_(), 0) + 1
+        #self.products[animal.product_type()] = self.products.get(animal.product_type(), animal.product()) + animal.product()
 
-    def collect_product_from_animals(self, product):
-        self.products[product.product_type()] = self.products.get(product.product_type(), [product.product()]) + [product.product()]
-        
+    def collect_product_from_animals(self):
+        """for animal in self.animals:
+            self.products[animal.product_type()] = self.products.get(animal.product_type(), animal.product()) + animal.product()"""
+        for animal in self.animals:          # Проходимся циклом по списку который лежит в self.animals
+            name = animal.product_type()     # Записываем в переменную тип продукта
+            #print(self.products)
+            if name in self.products:        # Пишем логику: если типродукта есть в словаре self.products
+                count = self.products[name]  # Записываем значение словаря в переменую
+                count += 1                   # Увеличиваем значение словаря на 1
+                self.products[name] = count  # Обновляем значение словаря
+            else:                            # Иначе
+                count = 1                    # Значение словаря = 1
+                self.products[name] = count  # Обновляем значение словаря
+
+
 if __name__ == "__main__":
 
     farm = Farm()
 
-    cows = [Cow() for _ in range(1, 10)]
+    cows = [Cow() for _ in range(10)]
     for cow in cows:
         farm.add_animal(cow)
+        farm.collect_product_from_animals()   
 
-    chickens = [Chicken() for _ in range(1, 20)]
+    chickens = [Chicken() for _ in range(20)]
     for chicken in chickens:
         farm.add_animal(chicken)
-
-    for animal_cow in cows:
-        farm.collect_product_from_animals(animal_cow)
-
-    for animal_chiken in chickens:
-        farm.collect_product_from_animals(animal_chiken)
+        farm.collect_product_from_animals()
 
     print(farm.animals_info)
-    #print(farm.animals_registrations)
     print(farm.products)
