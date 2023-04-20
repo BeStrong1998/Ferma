@@ -5,20 +5,27 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Маша'},
     {'first_name': 'Петя'},
+    {'first_name': 'Маша'},
+    {'first_name': 'Маша'},
+    {'first_name': 'Маша'},
+    {'first_name': 'Маша'},
+    {'first_name': 'Петя'}
 ]
 
 #{'Вася': 1, 'Маша': 2, 'Петя': 3} Провериить то в нумс нэйм етсь искомый ключ, если он есть делаем +1 к значению, иначе значение = 1
-nums_name = {}
+nums_name = {}                      #Создаём пустой словарь
+for i in students:                  #Проходимся циклом по словарю students
+    name = i['first_name']          #в перменную name записываем значения словаря students(имена студентов)
+    if name in nums_name:           #Если имя студента етсь в словаре nums_name
+        count = nums_name[name]     #берем значение с ключем name в словаре nums_name
+        count += 1                  #Увеличиваем переменную count на 1 как только находим в nums_name искомый ключ
+        nums_name[name] = count     #Обновляем значения в словаре nums_name
+    else:                           #Иначе
+        count = 1                   #Переменная count будет равна 1
+        nums_name[name] = count     #Обновляем значения в словаре nums_name
+print(nums_name)                    #Печатаем словарь nums_name
 
-for i in students:
-    print(i['first_name'])
-    name = i['first_name']
-    #print(nums_name)
-    if name in nums_name:
-        count = nums_name[name]
-        count += 1
-        nums_name[name] = count
-    else:
-        count = 1
-        nums_name[name] = count
-#print(nums_name)
+"""ну вот мы взяли первое имя, мы проверяем, что в словаре этого имени нет, добавляем в словарь вася:1 (это ветка else)
+потом берем второе имя, проверяем его в словаре , имени нет, добавляем петя:1
+потом 3 имя его тоже нет, добавлдяем маша 1
+потом берем третье имя, это маша, такое имя есть попадаем в ветку if и такое имя есть значение его до добавления - 1 еги и печатают"""

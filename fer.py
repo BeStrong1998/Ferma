@@ -48,38 +48,44 @@ class Farm():
         self.animals_registrations = {}
 
     def add_animal(self, animal):
-        self.animals.append(animal)
-        self.animals_info[animal.type_()] = self.animals_info.get(animal.type_(), 0) + 1
+        self.animals.append(animal) # Добавляем с список animals[] животных
+        self.animals_info[animal.type_()] = self.animals_info.get(animal.type_(), 0) + 1 # Добавляем в словарь animals_info{} информацию о животных
         #self.products[animal.product_type()] = self.products.get(animal.product_type(), animal.product()) + animal.product()
+        animal.uid = uuid.uuid4()
 
     def collect_product_from_animals(self):
-        """for animal in self.animals:
-            self.products[animal.product_type()] = self.products.get(animal.product_type(), animal.product()) + animal.product()"""
-        for animal in self.animals:          # Проходимся циклом по списку который лежит в self.animals
-            name = animal.product_type()     # Записываем в переменную тип продукта
-            #print(self.products)
-            if name in self.products:        # Пишем логику: если типродукта есть в словаре self.products
-                count = self.products[name]  # Записываем значение словаря в переменую
-                count += 1                   # Увеличиваем значение словаря на 1
-                self.products[name] = count  # Обновляем значение словаря
-            else:                            # Иначе
-                count = 1                    # Значение словаря = 1
-                self.products[name] = count  # Обновляем значение словаря
+        for animal in self.animals:                                             # Проходимся циклом по списку который лежит в self.animals
+            if animal.product_type() in self.products:                          # Пишем логику: если тип продукта есть в словаре self.products
+                self.products[animal.product_type()] += animal.product()        # Прибавляем значение в словаре к следующему значению и обновляем словарь
+            else:                                                               # Иначе
+                self.products[animal.product_type()] = animal.product()         # Значение в словаре = значению в продукте
 
+    def number_of_days(self, days):
+        day = [self.collect_product_from_animals() for _ in range(days)]
+        return day
+
+    def empty_the_warehouse(self):
+        copy_products = self.products.copy()
+        self.products = {}
+        return copy_products
 
 if __name__ == "__main__":
 
     farm = Farm()
 
-    cows = [Cow() for _ in range(10)]
-    for cow in cows:
-        farm.add_animal(cow)
-        farm.collect_product_from_animals()   
+    cows = [Cow() for _ in range(5)]   # Добавляем кол-во коров
+    for cow in cows:                    # Проходимся циклом по кол-во добавленых коров
+        farm.add_animal(cow)            # Обращаемся к объекту класса Farm() и вызываем функцию add_animal() с параметром cow(каждая корова) 
+        print(cow.uid)
 
-    chickens = [Chicken() for _ in range(20)]
+    chickens = [Chicken() for _ in range(10)] # Добавляем кол-во кур
     for chicken in chickens:
         farm.add_animal(chicken)
-        farm.collect_product_from_animals()
-
+        print(chicken.uid)
+    
+    farm.collect_product_from_animals() # Собираем продукцию с животных за 1 раз
+    farm.number_of_days(6)   # Собираем продукцию с животных за 7 дней
+    collected_prod = farm.empty_the_warehouse()
     print(farm.animals_info)
+    print(collected_prod)
     print(farm.products)
