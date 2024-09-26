@@ -16,7 +16,6 @@ class Animals(ABC):
     def product(self):
         pass
 
-
 class Cow(Animals):
     def type_(self):
         return 'cow'
@@ -28,7 +27,6 @@ class Cow(Animals):
         return random.randint(8, 12)
 
 cow = Cow()
-
 
 class Chicken(Animals):
     def type_(self):
@@ -42,7 +40,6 @@ class Chicken(Animals):
 
 chicken = Chicken()
 
-
 class Farm():
     def __init__(self):
         self.animals = []
@@ -51,30 +48,44 @@ class Farm():
         self.animals_registrations = {}
 
     def add_animal(self, animal):
-        self.animals.append(animal)
-        self.animals_info[animal.type_()] = self.animals_info.get(animal.type_(), 1) + 1
+        self.animals.append(animal) # Добавляем с список animals[] животных
+        self.animals_info[animal.type_()] = self.animals_info.get(animal.type_(), 0) + 1 # Добавляем в словарь animals_info{} информацию о животных
+        #self.products[animal.product_type()] = self.products.get(animal.product_type(), animal.product()) + animal.product()
+        animal.uid = uuid.uuid4()
 
-    def collect_product_from_animals(self, product):
-        self.products[product.product_type()] = self.products.get(product.product_type(), [product.product()]) + [product.product()]
-        
+    def collect_product_from_animals(self):
+        for animal in self.animals:                                             # Проходимся циклом по списку который лежит в self.animals
+            if animal.product_type() in self.products:                          # Пишем логику: если тип продукта есть в словаре self.products
+                self.products[animal.product_type()] += animal.product()        # Прибавляем значение в словаре к следующему значению и обновляем словарь
+            else:                                                               # Иначе
+                self.products[animal.product_type()] = animal.product()         # Значение в словаре = значению в продукте
+
+    def number_of_days(self, days):
+        day = [self.collect_product_from_animals() for _ in range(days)]
+        return day
+
+    def empty_the_warehouse(self):
+        copy_products = self.products.copy()
+        self.products = {}
+        return copy_products
+
 if __name__ == "__main__":
 
     farm = Farm()
 
-    cows = [Cow() for _ in range(1, 10)]
-    for cow in cows:
-        farm.add_animal(cow)
+    cows = [Cow() for _ in range(5)]   # Добавляем кол-во коров
+    for cow in cows:                    # Проходимся циклом по кол-во добавленых коров
+        farm.add_animal(cow)            # Обращаемся к объекту класса Farm() и вызываем функцию add_animal() с параметром cow(каждая корова) 
+        print(cow.uid)
 
-    chickens = [Chicken() for _ in range(1, 20)]
+    chickens = [Chicken() for _ in range(10)] # Добавляем кол-во кур
     for chicken in chickens:
         farm.add_animal(chicken)
-
-    for animal_cow in cows:
-        farm.collect_product_from_animals(animal_cow)
-
-    for animal_chiken in chickens:
-        farm.collect_product_from_animals(animal_chiken)
-
+        print(chicken.uid)
+    
+    farm.collect_product_from_animals() # Собираем продукцию с животных за 1 раз
+    farm.number_of_days(6)   # Собираем продукцию с животных за 7 дней
+    collected_prod = farm.empty_the_warehouse()
     print(farm.animals_info)
-    #print(farm.animals_registrations)
+    print(collected_prod)
     print(farm.products)
